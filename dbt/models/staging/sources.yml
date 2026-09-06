@@ -1,0 +1,29 @@
+version : 2
+
+sources :
+  - name : raw 
+    database : LearnFlow
+    schema : raw
+    description : Raw details loaded by the ingestion team.
+
+    tables:
+      - name : users 
+        description : one row per user
+
+      - name : courses
+        description : one row per courses
+
+      - name : lessons
+        description : lessons associated with each course id.
+
+      - name : events
+        description : actions performed by each user.
+
+      - name : sessions
+        description : information about each session per user.
+
+      - name : subscriptions
+        description : contains information about the subscription purchased by users.
+
+      - name : marketing
+        description : contains information about marketing campaingns.
