@@ -1,0 +1,309 @@
+version: 2
+
+models:
+
+  - name: dim_users
+    description: >
+      One row per LearnFlow user. Contains user demographic,
+      acquisition, device, learning goal, and skill-level attributes.
+
+    columns:
+
+      - name: user_id
+        description: Unique identifier for each user.
+        tests:
+          - not_null
+          - unique
+
+      - name: signup_date
+        description: Date and time when the user signed up.
+        tests:
+          - not_null
+
+      - name: signup_date_only
+        description: Signup date without the time component.
+
+      - name: signup_month
+        description: Month when user first signed up.
+
+      - name: country
+        description: User's country.
+
+      - name: age_group
+        description: User's age group.
+
+      - name: acquisition_channel
+        description: Marketing channel through which the user was acquired.
+
+      - name: device_type
+        description: User's device type.
+
+      - name: learning_goal
+        description: User's stated learning goal.
+
+      - name: skill_level
+        description: User's skill level.
+
+
+  - name: dim_courses
+    description: >
+      One row per LearnFlow course. Contains course attributes
+      used for course and category analysis.
+
+    columns:
+
+      - name: course_id
+        description: Unique identifier for each course.
+        tests:
+          - not_null
+          - unique
+
+      - name: course_name
+        description: Name of the course.
+
+      - name: category
+        description: Course category.
+
+      - name: difficulty
+        description: Course difficulty level.
+
+      - name: estimated_hours
+        description: Estimated number of hours required to complete the course.
+
+      - name: is_premium
+        description: Indicates whether the course is premium.
+
+      - name: course_type
+        description: Business-friendly classification of the course as Premium or Free.
+
+
+  - name: dim_lessons
+    description: >
+      One row per lesson. Contains lesson-level information
+      associated with each course.
+
+    columns:
+
+      - name: lesson_id
+        description: Unique identifier for each lesson.
+        tests:
+          - not_null
+          - unique
+
+      - name: course_id
+        description: Identifier of the course containing the lesson.
+        tests:
+          - not_null
+          - relationships:
+              arguments :
+                to: ref('dim_courses')
+                field: course_id
+
+      - name: lesson_number
+        description: Sequential lesson number within the course.
+
+      - name: lesson_title
+        description: Title of the lesson.
+
+      - name: duration_minutes
+        description: Lesson duration in minutes.
+  
+  - name: fact_events
+    description: >
+      One row per user-event. Contains cleaned user activity
+      and event-level information.
+
+    columns:
+
+      - name: event_id
+        description: Unique identifier for the event.
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: User who performed the event.
+        tests:
+          - not_null
+          - relationships:
+              arguments :
+                to: ref('dim_users')
+                field: user_id
+
+      - name: session_id
+        description: Session in which the event occurred.
+
+      - name: event_timestamp
+        description: Timestamp when the event occurred.
+        tests:
+          - not_null
+
+      - name: event_date
+        description: Date when the event occurred.
+
+      - name: event_month
+        description: First day of the month in which the event occurred.
+
+      - name: event_name
+        description: Name of the user event.
+
+      - name: course_id
+        description: Course associated with the event, when applicable.
+        tests:
+          - relationships:
+              arguments :
+                to: ref('dim_courses')
+                field: course_id
+                where: "course_id IS NOT NULL"
+
+      - name: lesson_id
+        description: Lesson associated with the event, when applicable.
+        tests:
+          - relationships:
+              arguments :
+                to: ref('dim_lessons')
+                field: lesson_id
+                where: "lesson_id IS NOT NULL"
+
+      - name: device_type
+        description: Device used when the event occurred.
+
+      - name: event_value
+        description: Numeric value associated with the event, when applicable.
+
+  - name: fact_sessions
+    description: >
+      One row per user-session. Contains session timing,
+      device information, and derived session duration.
+
+    columns:
+
+      - name: session_id
+        description: Session identifier.
+        tests:
+          - not_null
+
+      - name: user_id
+        description: User associated with the session.
+        tests:
+          - not_null
+          - relationships:
+              arguments :
+                to: ref('dim_users')
+                field: user_id
+
+      - name: session_start
+        description: Session start timestamp.
+        tests:
+          - not_null
+
+      - name: session_end
+        description: Session end timestamp.
+        tests:
+          - not_null
+
+      - name: session_date
+        description: Date when the session started.
+
+      - name: session_month
+        description: First day of the month when the session started.
+
+      - name: device_type
+        description: Device used during the session.
+
+      - name: session_duration_minutes
+        description: Duration of the session in minutes.
+
+
+  - name: fact_subscriptions
+    description: >
+      One row per subscription. Contains subscription plan,
+      dates, pricing, status, and derived duration.
+
+    columns:
+
+      - name: subscription_id
+        description: Unique identifier for the subscription.
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: User associated with the subscription.
+        tests:
+          - not_null
+          - relationships:
+              arguments :
+                to: ref('dim_users')
+                field: user_id
+
+      - name: plan
+        description: Subscription plan.
+
+      - name: start_date
+        description: Subscription start timestamp.
+        tests:
+          - not_null
+
+      - name: end_date
+        description: Subscription end timestamp, when applicable.
+
+      - name: monthly_price
+        description: Monthly subscription price.
+
+      - name: status
+        description: Current or recorded subscription status.
+
+      - name: subscription_start_date
+        description: Subscription start date without time.
+
+      - name: subscription_start_month
+        description: First day of the subscription start month.
+
+      - name: subscription_duration_days
+        description: Number of days between subscription start and end.
+
+  - name: fact_marketing
+    description: >
+      One row per campaign, date, and channel. Contains
+      marketing spend, reach, clicks, and foundational efficiency metrics.
+
+    columns:
+
+      - name: campaign_id
+        description: Campaign identifier.
+        tests:
+          - not_null
+
+      - name: campaign_date
+        description: Date of the campaign.
+        tests:
+          - not_null
+
+      - name: campaign_month
+        description: First day of the campaign month.
+        tests:
+          - not_null
+
+      - name: channel
+        description: Marketing channel.
+        tests:
+          - not_null
+
+      - name: campaign
+        description: Campaign name.
+
+      - name: spend
+        description: Marketing spend.
+
+      - name: impressions
+        description: Number of impressions.
+
+      - name: clicks
+        description: Number of clicks.
+
+      - name: ctr
+        description: Click-through rate calculated as clicks divided by impressions.
+
+      - name: cpc
+        description: Cost per click calculated as spend divided by clicks.
