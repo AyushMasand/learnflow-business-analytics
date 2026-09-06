@@ -96,28 +96,11 @@ Analysis-Ready Data
 
 | Tool / Technology | Purpose |
 |---|---|
-| **Python** | Data ingestion, chunked loading and data preparation |
-| **SQL Server** | Data storage, data profiling, validation and business analysis |
-| **SQL** | Business analysis, KPI calculation, segmentation, funnel analysis and aggregation |
-| **dbt** | Data transformation, reusable analytical models and data quality testing |
-| **Git & GitHub** | Version control and project documentation |
-
-### SQL Skills Demonstrated
-
-- CTEs
-- `JOIN` and `LEFT JOIN`
-- `GROUP BY`
-- Conditional aggregation
-- `CASE` statements
-- `COUNT(DISTINCT ...)`
-- Window functions
-- `LAG()`
-- `ROW_NUMBER()`
-- Date and time functions
-- KPI and percentage calculations
-- Funnel analysis
-- User segmentation
-- Business-oriented aggregation
+| Python | Data ingestion, chunked loading and data preparation |
+| SQL Server | Data storage, data profiling, validation and business analysis |
+| SQL | Business analysis, KPI calculation, segmentation, funnel analysis and aggregation |
+| dbt | Data transformation, reusable analytical models and data quality testing |
+| Git & GitHub | Version control and project documentation |
 
 ---
 
