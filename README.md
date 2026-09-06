@@ -369,6 +369,8 @@ Recommendation:
 - Investigate the higher CPC observed for Paid Search.
 - Evaluate marketing channels using downstream conversion or revenue metrics when reliable user-level attribution becomes available.
 
+---
+
 # 🏁 Conclusion
 
 This project provides an end-to-end view of LearnFlow's business performance across user acquisition, engagement, learning behavior, subscription conversion, and marketing efficiency.
@@ -378,7 +380,3 @@ The strongest business signal is the relationship between user engagement and su
 The learning funnel also highlights an opportunity to improve the transition from lesson start to lesson completion, while courses with below-benchmark progress provide potential targets for learning-experience improvements.
 
 Overall, the analysis demonstrates how data quality, transformation, SQL analysis, and business-focused interpretation can be combined to identify actionable opportunities for LearnFlow's growth and learner experience.
-
-From an acquisition perspective, Organic Search drives the largest volume of users, while Instagram has the highest subscription conversion rate. Marketing performance remains relatively stable overall, with Referral and Organic Search showing comparatively efficient click generation.
-
-Overall, the project demonstrates how raw operational data can be transformed into business-focused insights and actionable recommendations using Python, SQL Server, SQL, dbt and Git/GitHub.
